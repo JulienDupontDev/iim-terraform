@@ -1,24 +1,25 @@
 
 locals {
   timestamp = formatdate("YYMMDDhhmmss", timestamp())
-	root_dir = abspath("../")
+  // function is located in terraform/modules/functions/basic-function/
+	root_dir = abspath("./functions/basic-function/")
 }
 
 # Compression du code source
-data "archive_file" "source" {
+data "archive_file" "source_iim_juliendupont_1" {
   type        = "zip"
   source_dir  = local.root_dir
   output_path = "/tmp/function-${local.timestamp}.zip"
 }
 
 # Création du bucket pour stocker le code source de la fonction
-resource "google_storage_bucket" "bucket" {
+resource "google_storage_bucket" "bucket_function_iim_juliendupont_1" {
   name = "${var.project}-function"
-  location = "europe-west1"
+  location = "${var.region}"
 }
 
 # Ajouter le zip au bucket
-resource "google_storage_bucket_object" "zip" {
+resource "google_storage_bucket_object" "zip_iim_juliendupont_1" {
   # On ajoute le MD5 du fichier pour forcer la regénération
   name   = "source.zip#${data.archive_file.source.output_md5}"
   bucket = google_storage_bucket.bucket.name
@@ -43,10 +44,12 @@ resource "google_project_service" "cb" {
   disable_on_destroy         = false
 }
 
-# Création Cloud Functino
-resource "google_cloudfunctions_function" "function" {
+# Création Cloud Functions
+resource "google_cloudfunctions_function" "function_iim_juliendupont_1" {
   name    = var.function_name
-  runtime = "nodejs16" # Switch to a different runtime if needed
+  runtime = "nodejs18"
+  region = var.region
+
 
   available_memory_mb   = 128
   source_archive_bucket = google_storage_bucket.bucket.name
@@ -55,7 +58,7 @@ resource "google_cloudfunctions_function" "function" {
   entry_point           = var.function_entry_point
 }
 
-# Create IAM entry so all users can invoke the function
+# À des fins de démonstration uniquement, activation de l'invocation de la fonction par tous les utilisateurs
 resource "google_cloudfunctions_function_iam_member" "invoker" {
   project        = google_cloudfunctions_function.function.project
   region         = google_cloudfunctions_function.function.region
