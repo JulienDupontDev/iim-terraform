@@ -19,3 +19,7 @@ module "storage" {
 module "functions" {
   source = "./modules/functions"
 }
+
+module "bigquery" {
+  source = "./modules/bigquery"
+}
