@@ -12,10 +12,10 @@ provider "google" {
   region  = var.region
 }
 
-module "functions" {
-  source = "./modules/functions"
-}
-
 module "storage" {
   source  = "./modules/storage"
+}
+
+module "functions" {
+  source = "./modules/functions"
 }

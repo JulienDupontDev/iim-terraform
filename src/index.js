@@ -1,7 +1,7 @@
 const fastify = require('fastify')
 const app = fastify({ logger: true })
 
-app.get('/', async (req, res) => {
+app.get('/status', async (req, res) => {
   return { works: true }
 })
 

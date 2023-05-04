@@ -1,6 +1,13 @@
 variable "function_name" {
-    default = "basic_function_iim_juliendupont_1"
+    default = "function_iim_juliendupont_1"
 }
 variable "function_entry_point" {
-    default = "status"
+    default = "app"
+}
+variable "region" {
+	default = "europe-west1"
+}
+
+variable "project" {
+	default = "iim-gcp"
 }

@@ -1,8 +1,7 @@
 
 locals {
   timestamp = formatdate("YYMMDDhhmmss", timestamp())
-  // function is located in terraform/modules/functions/basic-function/
-	root_dir = abspath("../")
+    root_dir = abspath("../")
 }
 
 # Compression du code source
@@ -21,9 +20,10 @@ resource "google_storage_bucket" "bucket_function_iim_juliendupont_1" {
 # Ajouter le zip au bucket
 resource "google_storage_bucket_object" "zip_iim_juliendupont_1" {
   # On ajoute le MD5 du fichier pour forcer la regénération
-  name   = "source.zip#${data.archive_file.source.output_md5}"
-  bucket = google_storage_bucket.bucket.name
-  source = data.archive_file.source.output_path
+  source = data.archive_file.source_iim_juliendupont_1.output_path
+  content_type = "application/zip"
+  name   = "src-${data.archive_file.source_iim_juliendupont_1.output_md5}"
+  bucket = google_storage_bucket.bucket_function_iim_juliendupont_1.name
 }
 
 # Activation API Cloud functions
@@ -49,20 +49,20 @@ resource "google_cloudfunctions_function" "function_iim_juliendupont_1" {
   name    = var.function_name
   runtime = "nodejs18"
   region = var.region
-
+  description = "Check status function"
 
   available_memory_mb   = 128
-  source_archive_bucket = google_storage_bucket.bucket.name
-  source_archive_object = google_storage_bucket_object.zip.name
+  source_archive_bucket = google_storage_bucket.bucket_function_iim_juliendupont_1.name
+  source_archive_object = google_storage_bucket_object.zip_iim_juliendupont_1.name
   trigger_http          = true
   entry_point           = var.function_entry_point
 }
 
 # À des fins de démonstration uniquement, activation de l'invocation de la fonction par tous les utilisateurs
 resource "google_cloudfunctions_function_iam_member" "invoker" {
-  project        = google_cloudfunctions_function.function.project
-  region         = google_cloudfunctions_function.function.region
-  cloud_function = google_cloudfunctions_function.function.name
+  project        = google_cloudfunctions_function.function_iim_juliendupont_1.project
+  region         = google_cloudfunctions_function.function_iim_juliendupont_1.region
+  cloud_function = google_cloudfunctions_function.function_iim_juliendupont_1.name
 
   role   = "roles/cloudfunctions.invoker"
   member = "allUsers"
