@@ -1,66 +1,14 @@
 # Terraform GCP - IIM Julien Dupont
 
 ## Prérequis
-# tout en français, explique les différentes étapes pour pouvoir lancer le projet depuis le shell google cloud
+
 - Avoir un compte Google Cloud Platform
-- Avoir un projet
+- Avoir un projet Google Cloud Platform (https://console.cloud.google.com/projectcreate)
 - Avoir créé un compte de facturation (https://console.cloud.google.com/billing)
 - Avoir rélié le projet à la facturation (https://cloud.google.com/billing/docs/how-to/modify-project)
 
 
-## Installation
-
-- Ouvrir le shell Google Cloud Platform (https://console.cloud.google.com/home/dashboard?cloudshell=true)
-
-- Cloner le projet
-```bash
-git clone https://github.com/JulienDupontDev/iim-terraform.git
-```
-
-- Se déplacer dans le dossier du projet
-```bash
-cd iim-terraform
-```
-
-- Installer les dépendances de la fonction
-```bash
-npm install
-```
-
-- Passer l'ID du projet en variable d'environnement
-```bash
-export project=$(gcloud config get-value project)
-```
-
-- Initialiser Terraform (entrer "yes" quan demandé)
-```bash
-
-terraform init --backend-config="project=terraform-301013"
-```
-
-- Vérifier que tout est ok
-```bash
-terraform plan
-```
-
-- Lancer le déploiement
-```bash
-
-terraform apply
-```
-
-## Accéder à la fonction 
-
-- Aller dans la console Google Cloud Platform (https://console.cloud.google.com/functions/list)
-
-- Cliquer sur la fonction
-
-- Cliquer sur "Déclencheur"
-
-- Copier le lien et l'ouvrir dans un autre fenêtre en ajoutant "/status" à la fin de l'url
-
-
-## Structure du projet tree form
+## Structure du projet
 
 ```bash
 .
@@ -86,5 +34,75 @@ terraform apply
 ```
 
 
+## Installation
+
+- Ouvrir le shell Google Cloud Platform (https://console.cloud.google.com/home/dashboard?cloudshell=true)
+
+- Cloner le projet
+```bash
+git clone https://github.com/JulienDupontDev/iim-terraform.git
+```
+
+- Se déplacer dans le dossier du projet
+```bash
+cd iim-terraform
+```
+
+- Installer les dépendances de la fonction
+```bash
+npm install
+```
+
+- Modifier la variable "project" dans tous les fichiers variables.tf avec l'id correspondant à votre projet Google Cloud.
+
+- Se déplacer dans le dossier terraform
+```bash
+cd terraform
+```
+
+- Commenter les lignes 3 à 6 du fichier backend.tf
+
+- Initialiser Terraform (entrer "yes" quand demandé)
+```bash
+terraform init
+```
+
+- Vérifier que tout est ok
+```bash
+terraform plan
+```
+- Lancer le déploiement
+```bash
+terraform apply
+```
+
+- Décommenter les lignes 3 à 6 du fichier backend.tf puis lancer la commande
+```bash
+terraform init
+```
+
+## Supprimer les ressources
+
+- Commenter les lignes 3 à 6 du fichier backend.tf
+- Lancer la commande
+```bash
+terraform -migrate-state # permet de migrer l'état du bucket localement
+```
+
+- Supprimer les ressources
+```bash
+terraform destroy
+```
+
+
+## Accéder à la fonction 
+
+- Aller dans la console Google Cloud Platform (https://console.cloud.google.com/functions/list)
+
+- Cliquer sur la fonction
+
+- Cliquer sur "Déclencheur"
+
+- Copier le lien et l'ouvrir dans un autre fenêtre en ajoutant "/status" à la fin de l'url
 
 
