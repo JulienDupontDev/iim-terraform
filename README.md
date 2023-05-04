@@ -43,9 +43,9 @@
 git clone https://github.com/JulienDupontDev/iim-terraform.git
 ```
 
-- Se déplacer dans le dossier du projet
+- Se déplacer dans le dossier de la fonction js
 ```bash
-cd iim-terraform
+cd iim-terraform/src
 ```
 
 - Installer les dépendances de la fonction
@@ -57,7 +57,7 @@ npm install
 
 - Se déplacer dans le dossier terraform
 ```bash
-cd terraform
+cd ../terraform
 ```
 
 - Commenter les lignes 3 à 6 du fichier backend.tf
