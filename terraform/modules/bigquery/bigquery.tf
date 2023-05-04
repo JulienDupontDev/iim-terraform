@@ -1,4 +1,4 @@
-resource "google_biquery_dataset" "bigquery_dataset_iim_julien_dupont_1" {
+resource "google_bigquery_dataset" "bigquery_dataset_iim_julien_dupont_1" {
     dataset_id = var.bigquery_dataset_name
     location = var.region
     friendly_name = "Players"
@@ -6,7 +6,7 @@ resource "google_biquery_dataset" "bigquery_dataset_iim_julien_dupont_1" {
 }
 
 resource "google_bigquery_table" "biquery_table_iim_juliendupont_1" {
-    dataset_id = var.bigquery_dataset_name
+    dataset_id = google_bigquery_dataset.bigquery_dataset_iim_julien_dupont_1.dataset_id
     table_id = var.bigquery_table_name
     
     schema = <<EOF
