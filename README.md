@@ -86,7 +86,7 @@ terraform init
 - Commenter les lignes 3 à 6 du fichier backend.tf
 - Lancer la commande
 ```bash
-terraform -migrate-state # permet de migrer l'état du bucket localement
+terraform init -migrate-state # permet de migrer l'état du bucket localement
 ```
 
 - Supprimer les ressources
