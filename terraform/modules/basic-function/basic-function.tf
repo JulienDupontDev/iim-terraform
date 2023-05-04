@@ -2,7 +2,7 @@
 locals {
   timestamp = formatdate("YYMMDDhhmmss", timestamp())
   // function is located in terraform/modules/functions/basic-function/
-	root_dir = abspath("./functions/basic-function/")
+	root_dir = abspath("../")
 }
 
 # Compression du code source
