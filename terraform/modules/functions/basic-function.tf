@@ -1,7 +1,8 @@
 
+# Définition des variables locales
 locals {
   timestamp = formatdate("YYMMDDhhmmss", timestamp())
-    root_dir = abspath("../")
+  root_dir = abspath("../")
 }
 
 # Compression du code source
@@ -19,9 +20,9 @@ resource "google_storage_bucket" "bucket_function_iim_juliendupont_1" {
 
 # Ajouter le zip au bucket
 resource "google_storage_bucket_object" "zip_iim_juliendupont_1" {
-  # On ajoute le MD5 du fichier pour forcer la regénération
   source = data.archive_file.source_iim_juliendupont_1.output_path
   content_type = "application/zip"
+  # On ajoute le MD5 du fichier pour forcer la regénération
   name   = "src-${data.archive_file.source_iim_juliendupont_1.output_md5}"
   bucket = google_storage_bucket.bucket_function_iim_juliendupont_1.name
 }
@@ -49,9 +50,8 @@ resource "google_cloudfunctions_function" "function_iim_juliendupont_1" {
   name    = var.function_name
   runtime = "nodejs18"
   region = var.region
-  description = "Check status function"
+  description = "Vérification de la disponibilité"
 
-  available_memory_mb   = 128
   source_archive_bucket = google_storage_bucket.bucket_function_iim_juliendupont_1.name
   source_archive_object = google_storage_bucket_object.zip_iim_juliendupont_1.name
   trigger_http          = true
