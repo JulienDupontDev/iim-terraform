@@ -2,7 +2,7 @@
 # Définition des variables locales
 locals {
   timestamp = formatdate("YYMMDDhhmmss", timestamp())
-  root_dir = abspath("../")
+  root_dir = abspath("../src/")
 }
 
 # Compression du code source
